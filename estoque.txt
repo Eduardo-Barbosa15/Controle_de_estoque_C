@@ -1,5 +1,5 @@
 Produto	Quantidade	Preço	ID
-teste		10		10.00	1
+NULL		0		0.00	0
 NULL		0		0.00	0
 NULL		0		0.00	0
 NULL		0		0.00	0

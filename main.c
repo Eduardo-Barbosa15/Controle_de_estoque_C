@@ -84,7 +84,7 @@ void remove_produto(FILE *estoque, tabela_produtos produtos[100])
 {
     int buffer;
     estoque = fopen("estoque.txt", "w");
-    printf("Digite o ID do produto você deseja remover\n");
+    printf("Digite o ID do produto voce deseja remover\n");
     scanf("%d", &buffer);
     for (int i = 0; i < 100; i++)
     {
@@ -112,6 +112,13 @@ void remove_produto(FILE *estoque, tabela_produtos produtos[100])
         }
        
     }
+    fclose(estoque);
+}
+
+void altera_preco(FILE *estoque, tabela_produtos produtos[100])
+{
+    estoque = fopen("estoque.txt", "w");
+    
     fclose(estoque);
 }
 
