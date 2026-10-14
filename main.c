@@ -20,15 +20,11 @@ void inicializa_dados_tabela(tabela_produtos produtos[100], FILE *estoque)
         {
             char buffer[100];
             if (fscanf(estoque, "%s\t%s\t%s\t%s",buffer, buffer, buffer, buffer) == 4);
+            if (fscanf(estoque, "%s\t\t%d\t\t%f\t%d", produtos[i].nome_produto, &produtos[i].quantidade, &produtos[i].preco, &produtos[i].id) == 4);
         }
-        if (i != 0)
+        else if (i != 0)
         {
-            j++;
-            if (j == 1)
-            {
-                i = 0;
-            }
-            else if (fscanf(estoque, "%s\t\t%d\t\t%f\t%d", produtos[i].nome_produto, &produtos[i].quantidade, &produtos[i].preco, &produtos[i].id) == 4);
+            if (fscanf(estoque, "%s\t\t%d\t\t%f\t%d", produtos[i].nome_produto, &produtos[i].quantidade, &produtos[i].preco, &produtos[i].id) == 4);
         }
     }
     fclose(estoque);
@@ -118,7 +114,48 @@ void remove_produto(FILE *estoque, tabela_produtos produtos[100])
 void altera_preco(FILE *estoque, tabela_produtos produtos[100])
 {
     estoque = fopen("estoque.txt", "w");
-    
+    printf("Digite o ID do produto voce deseja alterar o preco\n");
+    int buffer;
+    scanf("%d", &buffer);
+    for (int i = 0; i < 100; i++)
+    {
+        if (i == 99 && buffer == 0)
+        {
+            printf("produto nao encontrado!\n");
+            break;
+        }
+        if (produtos[i].id == buffer)
+        {
+            printf("Digite o novo preco do produto: \n");
+            scanf("%f", &produtos[i].preco);
+            printf("Preco alterado com sucesso!\n");
+            break;
+        }
+    }
+    fclose(estoque);
+}
+
+void altera_quantidade(FILE *estoque, tabela_produtos produtos[100])
+{
+    estoque = fopen("estoque.txt", "w");
+    printf("Digite o ID do produto voce deseja alterar a quantidade\n");
+    int buffer;
+    scanf("%d", &buffer);
+    for (int i = 0; i < 100; i++)
+    {
+        if (i == 99 && buffer == 0)
+        {
+            printf("produto nao encontrado!\n");
+            break;
+        }
+        if (produtos[i].id == buffer)
+        {
+            printf("Digite a quantidade do produto: \n");
+            scanf("%d", &produtos[i].quantidade);
+            printf("Quantidade alterada com sucesso!\n");
+            break;
+        }
+    }
     fclose(estoque);
 }
 
@@ -154,11 +191,11 @@ int main()
         printf("         BEM VINDO AO CONTROLE DE ESTOQUE \n");
         printf("**************************************************\n");
         printf("Escolha uma das opcoes abaixo: \n");
-        printf("0 - Ver estoque atual\n");
-        printf("1 - atulizar estoque\n");
-        printf("2 - Sair\n");
+        printf("1 - Ver estoque atual\n");
+        printf("2 - atulizar estoque\n");
+        printf("0 - Sair\n");
         scanf("%d", &resposta);
-        if (resposta == 0)
+        if (resposta == 1)
         {
             printf("**************************************\n");
             printf("Este eh o estoque atual: \n");
@@ -176,7 +213,7 @@ int main()
             }
             printf("\n");
         }
-        else if (resposta == 2)
+        else if (resposta == 0)
         {
             break;
         }
@@ -185,36 +222,40 @@ int main()
             printf("**************************************\n");
             printf("        O Que deseja fazer?\n");
             printf("**************************************\n");
-            printf("0 - Adicionar produto\n");
-            printf("1 - Remover produto\n");
-            printf("2 - Alterar preco\n");
-            printf("3 - Alterar quantidade\n");
-            printf("4 - Voltar\n");
+            printf("1 - Adicionar produto\n");
+            printf("2 - Remover produto\n");
+            printf("3 - Alterar preco\n");
+            printf("4 - Alterar quantidade\n");
+            printf("0 - Voltar\n");
             scanf("%d", &resposta);
-            while(resposta >= 0 && resposta <= 3)
+            while(resposta > 0 && resposta <= 4)
             {
-                if (resposta == 0)
+                if (resposta == 1)
                 {
                     add_produto(estoque, produtos);
                     atualiza_arquivo(estoque, produtos);
                     break;
                 }
-                else if (resposta == 1)
+                else if (resposta == 2)
                 {
                     remove_produto(estoque, produtos);
                     atualiza_arquivo(estoque, produtos);
                     break;
                 }
-                else if (resposta == 2)
-                {
-                    // Alterar preço
-                }
                 else if (resposta == 3)
                 {
-                    // Alterar quantidade
+                    altera_preco(estoque, produtos);
+                    atualiza_arquivo(estoque, produtos);
+                    break;
+                }
+                else if (resposta == 4)
+                {
+                    altera_quantidade(estoque, produtos);
+                    atualiza_arquivo(estoque, produtos);
+                    break;
                 }
             }
-            resposta = 0;
+            resposta = 1;
             printf("\n");
         }
     }
